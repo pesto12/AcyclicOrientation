@@ -3,6 +3,8 @@
 ## About:
 This is my implementation of [algorithm](https://www.cos.ufrj.br/uploadfile/es40596.pdf) in Haskell programming language.
 It works in following way: firstly find all possible orientations, then return number of those and some orientation.
+Graphs are represented by using adjacency list, so in input undirected graph each edge u-v is represented twice, in u's adjacency list and in v's adjacency list.
+
 Some test data:
 ```
 getAcyclicOrientations (Graph [Vertex 0 [1], Vertex 1[0]])
