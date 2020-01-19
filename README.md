@@ -1,6 +1,6 @@
 # All possible acyclic graph orientations
 
-##About:
+## About:
 This it my implementation of [algorithm](https://www.cos.ufrj.br/uploadfile/es40596.pdf) in Haskell programming language.
 
 Some test data:
