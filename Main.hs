@@ -113,7 +113,7 @@ getAncestors :: Int -> Graph -> [Int]
 getAncestors v (Graph verts) = ancestors
     where
         (_, _,ancestors, _) =  getAncestors'( [v], parents [v], [], verts )
-        getAncestors' ([], curP, allP , verts) = ([], [], curP ++ allP, [])
+        getAncestors' ([], curP, allP , verts) = ([], [], curP `union` allP, [])
         getAncestors' (ofV, curP, allP , verts) = getAncestors'(curP, parents curP, curP `union` allP, verts)
         parents ofV = getParents ofV (Graph verts)
 
