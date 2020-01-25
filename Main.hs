@@ -1,15 +1,49 @@
 import Data.List
+import System.IO
 
 data Vertex = Vertex Int [Int] deriving (Show)
 
 data Graph = Graph [Vertex] deriving (Show)
 
 
---------------------------------------------------------------MAIN PART
+--------------------------------------------------------------INPUT/OUTPUT PART
+
+main :: IO ()
+main = do
+    putStrLn "Enter input file:"
+    input <- getLine
+    putStrLn "Enter output file:"
+    output <- getLine
+    inputHandle <- openFile input ReadMode
+    inputContents <- hGetContents inputHandle
+    let graphDescription = lines inputContents
+    writeFile output (show (process graphDescription)) 
+
+
+process :: [String] -> (Int, Graph)
+process graphDescription = getAcyclicOrientations (parseGraph graphDescription)
+
+parseGraph :: [String] -> Graph
+parseGraph description = (Graph (map toVert (parseLinesToVerts description [])))
+    where
+        toVert (index, neigh) = (Vertex index neigh)
+
+parseLinesToVerts :: [String] -> [(Int, [Int])] -> [(Int, [Int])]
+parseLinesToVerts [] vertexes = vertexes
+parseLinesToVerts (vertex:neighbours:rest) vertexes =  parseLinesToVerts rest ( (read vertex :: Int, read neighbours :: [Int] )  : vertexes)
+
+
+--------------------------------------------------------------MAIN IMPLEMENTATION PART
 getAcyclicOrientations :: Graph -> (Int , Graph)
 getAcyclicOrientations (Graph vs) = 
     if length vs == 0 then (1, Graph [])
     else (length oriented, head oriented)
+    where oriented = acyclic 0 (Graph []) (Graph vs) []
+
+__getAcyclicOrientations :: Graph -> (Int, [Graph])
+__getAcyclicOrientations (Graph vs) = 
+    if length vs == 0 then (1, [Graph []])
+    else (length oriented, oriented)
     where oriented = acyclic 0 (Graph []) (Graph vs) []
 
 --       vert , G-> -vert, origin,  oldRes,    returnRes
